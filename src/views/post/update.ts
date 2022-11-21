@@ -40,17 +40,14 @@ let getContent = (textEditor: vscode.TextEditor): string => {
 };
 
 let generatePost = (content: string): Post => {
-  const METADATA_PATTERN =
-    /^---[ \t]*\n((?:[ \t]*[^ \t:]+[ \t]*:[^\n]*\n)+)---[ \t]*\n/;
+  const METADATA_PATTERN = /^\s*---\s*\n((?:\s*[^\s:]+\s*:[^\n]*\n)+)---\s*\n/g;
 
   const match = METADATA_PATTERN.exec(content);
   if (!match) {
     throw new Error("No metadata found. Contents should include metadata.");
   }
 
-  const body_md = content
-    .substring(match[0].trim().length)
-    .replace(/^[\s\n]+/, "");
+  const body_md = content.substring(match[0].trim().length).replace(/^\s+/, "");
   let metadata: any = {};
   match[1]
     .trim()
