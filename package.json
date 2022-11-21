@@ -11,17 +11,18 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:esa.open"
+    "onCommand:extension.esa.open",
+    "onCommand:extension.esa.update"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "esa.open",
+        "command": "extension.esa.open",
         "title": "ESA: Open Post"
       },
       {
-        "command": "esa.update",
+        "command": "extension.esa.update",
         "title": "ESA: Update Post"
       }
     ],
