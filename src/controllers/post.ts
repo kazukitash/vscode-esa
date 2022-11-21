@@ -12,22 +12,22 @@ export class PostController {
 
     if (!option) return posts;
 
-    const config = vscode.workspace.getConfiguration("esa");
-    const params = {
+    const esa = vscode.workspace.getConfiguration("esa");
+    const config = {
+      method: "get",
+      url: `${this.esaURL}/${esa.teamName}/posts`,
       params: {
-        access_token: config.accessToken,
-        q: option === IndexOptions.Own ? `@${config.userName}` : "",
+        access_token: esa.accessToken,
+        q: option === IndexOptions.Own ? `@${esa.userName}` : "",
       },
     };
 
     vscode.window.setStatusBarMessage("Requesting posts ...", 2000);
-    const response = await axios
-      .get(`${this.esaURL}/${config.teamName}/posts`, params)
-      .catch((error: any) => {
-        throw new Error(
-          `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`
-        );
-      });
+    const response = await axios(config).catch((error: any) => {
+      throw new Error(
+        `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`
+      );
+    });
 
     if (response.headers["content-type"].includes("json")) {
       posts = response.data.posts;

@@ -8,8 +8,8 @@ export function activate(context: vscode.ExtensionContext) {
   console.log('"vscode-esa" is now active!');
 
   let open = vscode.commands.registerCommand("esa.open", () => {
-    const config = vscode.workspace.getConfiguration("esa");
-    if (configIsValid(config)) PostIndexView();
+    const esa = vscode.workspace.getConfiguration("esa");
+    if (configIsValid(esa)) PostIndexView();
   });
   let update = vscode.commands.registerCommand("esa.update", () => {
     const esa = vscode.workspace.getConfiguration("esa");
