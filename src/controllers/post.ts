@@ -50,22 +50,16 @@ export class PostController {
       },
     };
 
-    try {
-      axios(config)
-        .then((response: any) => {
-          vscode.window.showInformationMessage(
-            `Update post "${response.data.name}"`
-          );
-        })
-        .catch((error: any) => {
-          throw new Error(
-            `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`
-          );
-        });
-    } catch (error) {
-      if (error instanceof Error) {
-        vscode.window.showWarningMessage(error.message);
-      }
-    }
+    axios(config)
+      .then((response: any) => {
+        vscode.window.showInformationMessage(
+          `Update post "${response.data.name}"`
+        );
+      })
+      .catch((error: any) => {
+        vscode.window.showErrorMessage(
+          `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`
+        );
+      });
   }
 }
