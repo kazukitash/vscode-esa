@@ -19,6 +19,10 @@
       {
         "command": "esa.open",
         "title": "ESA: Open Post"
+      },
+      {
+        "command": "esa.update",
+        "title": "ESA: Update Post"
       }
     ],
     "configuration": {

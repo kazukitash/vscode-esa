@@ -35,4 +35,37 @@ export class PostController {
 
     return posts;
   }
+
+  static update(post: Post) {
+    const esa = vscode.workspace.getConfiguration("esa");
+    const config = {
+      method: "patch",
+      url: `${this.esaURL}/${esa.teamName}/posts/${post.number}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${esa.accessToken}`,
+      },
+      data: {
+        post: post,
+      },
+    };
+
+    try {
+      axios(config)
+        .then((response: any) => {
+          vscode.window.showInformationMessage(
+            `Update post "${response.data.name}"`
+          );
+        })
+        .catch((error: any) => {
+          throw new Error(
+            `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`
+          );
+        });
+    } catch (error) {
+      if (error instanceof Error) {
+        vscode.window.showWarningMessage(error.message);
+      }
+    }
+  }
 }
