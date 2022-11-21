@@ -48,7 +48,9 @@ let generatePost = (content: string): Post => {
     throw new Error("No metadata found. Contents should include metadata.");
   }
 
-  const body_md = content.substring(match[0].trim().length).replace(/^s+/, "");
+  const body_md = content
+    .substring(match[0].trim().length)
+    .replace(/^[\s\n]+/, "");
   let metadata: any = {};
   match[1]
     .trim()
