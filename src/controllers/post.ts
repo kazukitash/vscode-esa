@@ -9,13 +9,13 @@ import { Exception, LOGTYPE } from "../helpers/exception";
 export class PostController {
   static esaURL = "https://api.esa.io/v1/teams";
 
-  static async index(esaConfig: ESAConfig, query: string): Promise<Posts> {
+  static async index(esaConfig: ESAConfig, q: string): Promise<Posts> {
     const config = {
       method: "get",
       url: `${this.esaURL}/${esaConfig.teamName}/posts`,
       params: {
         access_token: esaConfig.accessToken,
-        q: query,
+        q: q,
       },
     };
 
