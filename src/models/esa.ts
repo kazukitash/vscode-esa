@@ -1,6 +1,6 @@
 import { WorkspaceConfiguration, window } from "vscode";
 
-export class ESAConfig {
+export class ESA {
   accessToken?: string;
   userName?: string;
   teamName?: string;

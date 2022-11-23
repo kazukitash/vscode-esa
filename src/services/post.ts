@@ -2,19 +2,31 @@ import { window } from "vscode";
 const axios = require("axios");
 import { Post } from "../models/post";
 import { Posts } from "../models/posts";
-import { ESAConfig } from "../models/esaConfig";
-import { Exception, LOGTYPE } from "../helpers/exception";
+import { ESA } from "../models/esa";
+import { Exception, LOG_TYPE } from "../helpers/exception";
 
-export class PostController {
+const OPEN_OPTION = {
+  OWN: "Open from my posts",
+  LATEST: "Open from latest posts",
+} as const;
+
+export const OPEN_OPTIONS = Object.values(OPEN_OPTION);
+
+export class PostService {
   static esaURL = "https://api.esa.io/v1/teams";
+  esa: ESA;
 
-  static async index(esaConfig: ESAConfig, q: string): Promise<Posts> {
+  constructor(esa: ESA) {
+    this.esa = esa;
+  }
+
+  async open(option: string): Promise<Posts> {
     const config = {
       method: "get",
-      url: `${this.esaURL}/${esaConfig.teamName}/posts`,
+      url: `${PostService.esaURL}/${this.esa.teamName}/posts`,
       params: {
-        access_token: esaConfig.accessToken,
-        q: q,
+        access_token: this.esa.accessToken,
+        q: option === OPEN_OPTION.OWN ? `@${this.esa.userName}` : "",
       },
     };
 
@@ -33,7 +45,7 @@ export class PostController {
         .catch((error: any) => {
           throw new Exception(
             `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`,
-            LOGTYPE.ERROR
+            LOG_TYPE.ERROR
           );
         });
     } catch (error) {
@@ -46,13 +58,13 @@ export class PostController {
     return new Posts(posts);
   }
 
-  static update(esaConfig: ESAConfig, post: Post) {
+  update(post: Post) {
     const config = {
       method: "patch",
-      url: `${this.esaURL}/${esaConfig.teamName}/posts/${post.number}`,
+      url: `${PostService.esaURL}/${this.esa.teamName}/posts/${post.number}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${esaConfig.accessToken}`,
+        Authorization: `Bearer ${this.esa.accessToken}`,
       },
       data: {
         post: post,
@@ -68,7 +80,7 @@ export class PostController {
         .catch((error: any) => {
           throw new Exception(
             `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`,
-            LOGTYPE.ERROR
+            LOG_TYPE.ERROR
           );
         });
     } catch (error) {

@@ -1,12 +1,12 @@
 import { window } from "vscode";
 
-export const LOGTYPE = {
+export const LOG_TYPE = {
   INFO: "info",
   WARN: "warning",
   ERROR: "error",
 } as const;
 
-type LogType = typeof LOGTYPE[keyof typeof LOGTYPE];
+type LogType = typeof LOG_TYPE[keyof typeof LOG_TYPE];
 
 export class Exception {
   message: string;
@@ -19,13 +19,13 @@ export class Exception {
 
   log() {
     switch (this.type) {
-      case LOGTYPE.INFO:
+      case LOG_TYPE.INFO:
         window.showInformationMessage(this.message);
         break;
-      case LOGTYPE.WARN:
+      case LOG_TYPE.WARN:
         window.showWarningMessage(this.message);
         break;
-      case LOGTYPE.ERROR:
+      case LOG_TYPE.ERROR:
       default:
         window.showErrorMessage(this.message);
         break;

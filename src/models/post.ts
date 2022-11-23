@@ -1,5 +1,5 @@
 import { Dayjs } from "dayjs";
-import { Exception, LOGTYPE } from "../helpers/exception";
+import { Exception, LOG_TYPE } from "../helpers/exception";
 import { User } from "./User";
 
 export class Post {
@@ -43,7 +43,7 @@ export class Post {
     if (!match) {
       throw new Exception(
         "No metadata found. Contents should include metadata.",
-        LOGTYPE.ERROR
+        LOG_TYPE.ERROR
       );
     }
 
@@ -64,13 +64,13 @@ export class Post {
     if (!metadata.name) {
       throw new Exception(
         "metadata(name:) is not found. Name should be included in metadata.",
-        LOGTYPE.ERROR
+        LOG_TYPE.ERROR
       );
     }
     if (!metadata.number) {
       throw new Exception(
         "metadata(number:) is not found. Number should be include in metadata.",
-        LOGTYPE.ERROR
+        LOG_TYPE.ERROR
       );
     }
     if (!metadata.wip) metadata.wip = true;

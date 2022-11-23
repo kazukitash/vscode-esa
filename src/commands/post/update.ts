@@ -1,16 +1,16 @@
 import { window } from "vscode";
 import { Post } from "../../models/post";
-import { PostController } from "../../controllers/post";
-import { ESAConfig } from "../../models/esaConfig";
-import { Exception, LOGTYPE } from "../../helpers/exception";
+import { PostService } from "../../services/post";
+import { ESA } from "../../models/esa";
+import { Exception, LOG_TYPE } from "../../helpers/exception";
 
-export function PostUpdateView(esaConfig: ESAConfig) {
+export function PostUpdate(esa: ESA) {
   try {
     const textEditor = window.activeTextEditor;
     if (!textEditor || textEditor.document.languageId != "markdown") {
       throw new Exception(
         "Markdown file is not open. Please open and focus the markdown file you want to update.",
-        LOGTYPE.ERROR
+        LOG_TYPE.ERROR
       );
     }
 
@@ -18,12 +18,13 @@ export function PostUpdateView(esaConfig: ESAConfig) {
     if (content.trim().length == 0) {
       throw new Exception(
         "No contents. Please open and focus the file with contents.",
-        LOGTYPE.ERROR
+        LOG_TYPE.ERROR
       );
     }
 
     const post = Post.cast(content);
-    PostController.update(esaConfig, post);
+    const postService = new PostService(esa);
+    postService.update(post);
   } catch (error) {
     if (error instanceof Exception) {
       error.log();

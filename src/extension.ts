@@ -1,18 +1,18 @@
 import { ExtensionContext, commands, workspace } from "vscode";
-import { PostIndexView } from "./views/post/index";
-import { PostUpdateView } from "./views/post/update";
-import { ESAConfig } from "./models/esaConfig";
+import { PostOpen } from "./commands/post/open";
+import { PostUpdate } from "./commands/post/update";
+import { ESA } from "./models/esa";
 
 export function activate(context: ExtensionContext) {
   console.log('"vscode-esa" is now active!');
 
   let open = commands.registerCommand("extension.esa.open", () => {
-    const esaConfig = new ESAConfig(workspace.getConfiguration("esa"));
-    if (esaConfig.isValid()) PostIndexView(esaConfig);
+    const esa = new ESA(workspace.getConfiguration("esa"));
+    if (esa.isValid()) PostOpen(esa);
   });
   let update = commands.registerCommand("extension.esa.update", () => {
-    const esaConfig = new ESAConfig(workspace.getConfiguration("esa"));
-    if (esaConfig.isValid()) PostUpdateView(esaConfig);
+    const esa = new ESA(workspace.getConfiguration("esa"));
+    if (esa.isValid()) PostUpdate(esa);
   });
 
   context.subscriptions.push(open);
