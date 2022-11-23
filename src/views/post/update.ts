@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-
 import { Post } from "../../models/post";
 import { PostController } from "../../controllers/post";
 
