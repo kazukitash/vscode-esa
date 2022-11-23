@@ -20,21 +20,23 @@ export class PostController {
     };
 
     let posts = new Array<Post>();
+    vscode.window.setStatusBarMessage("Requesting posts ...", 2000);
     try {
-      vscode.window.setStatusBarMessage("Requesting posts ...", 2000);
-      const response = await axios(config).catch((error: any) => {
-        throw new Exception(
-          `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`,
-          LOGTYPE.ERROR
-        );
-      });
-
-      if (response.headers["content-type"].includes("json")) {
-        response.data.posts.forEach((postData: any) => {
-          const post = Post.decode(postData);
-          if (post) posts.push(post);
+      axios(config)
+        .then((response: any) => {
+          if (response.headers["content-type"].includes("json")) {
+            response.data.posts.forEach((postData: any) => {
+              const post = Post.decode(postData);
+              if (post) posts.push(post);
+            });
+          }
+        })
+        .catch((error: any) => {
+          throw new Exception(
+            `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`,
+            LOGTYPE.ERROR
+          );
         });
-      }
     } catch (error) {
       if (error instanceof Exception) {
         error.log();

@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { IndexOptions, AllIndexOptions } from "../../helpers/indexOptions";
 import { PostController } from "../../controllers/post";
 import { ESAConfig } from "../../models/esaConfig";
-import { LOGTYPE, Exception } from "../../helpers/exception";
+import { Exception, LOGTYPE } from "../../helpers/exception";
 
 export function PostIndexView(esaConfig: ESAConfig) {
   try {
