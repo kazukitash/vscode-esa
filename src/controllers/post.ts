@@ -2,38 +2,47 @@ import * as vscode from "vscode";
 const axios = require("axios");
 
 import { Post } from "../models/post";
-import { IndexOptions } from "../helpers/indexOptions";
+import { Posts } from "../models/posts";
+import { ESAConfig } from "../models/esaConfig";
+import { Exception, LOGTYPE } from "../helpers/exception";
 
 export class PostController {
   static esaURL = "https://api.esa.io/v1/teams";
 
-  static async index(option: string | undefined): Promise<Post[]> {
-    var posts = new Array<Post>();
-
-    if (!option) return posts;
-
-    const esa = vscode.workspace.getConfiguration("esa");
+  static async index(esaConfig: ESAConfig, query: string): Promise<Posts> {
     const config = {
       method: "get",
-      url: `${this.esaURL}/${esa.teamName}/posts`,
+      url: `${this.esaURL}/${esaConfig.teamName}/posts`,
       params: {
-        access_token: esa.accessToken,
-        q: option === IndexOptions.Own ? `@${esa.userName}` : "",
+        access_token: esaConfig.accessToken,
+        q: query,
       },
     };
 
-    vscode.window.setStatusBarMessage("Requesting posts ...", 2000);
-    const response = await axios(config).catch((error: any) => {
-      throw new Error(
-        `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`
-      );
-    });
+    let posts = new Array<Post>();
+    try {
+      vscode.window.setStatusBarMessage("Requesting posts ...", 2000);
+      const response = await axios(config).catch((error: any) => {
+        throw new Exception(
+          `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`,
+          LOGTYPE.ERROR
+        );
+      });
 
-    if (response.headers["content-type"].includes("json")) {
-      posts = response.data.posts;
+      if (response.headers["content-type"].includes("json")) {
+        response.data.posts.forEach((postData: any) => {
+          const post = Post.decode(postData);
+          if (post) posts.push(post);
+        });
+      }
+    } catch (error) {
+      if (error instanceof Exception) {
+        error.log();
+      } else {
+        console.log(error);
+      }
     }
-
-    return posts;
+    return new Posts(posts);
   }
 
   static update(post: Post) {
