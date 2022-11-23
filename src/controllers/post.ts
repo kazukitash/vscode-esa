@@ -22,7 +22,7 @@ export class PostController {
     let posts = new Array<Post>();
     vscode.window.setStatusBarMessage("Requesting posts ...", 2000);
     try {
-      axios(config)
+      await axios(config)
         .then((response: any) => {
           if (response.headers["content-type"].includes("json")) {
             response.data.posts.forEach((postData: any) => {
