@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import { PostIndexView } from "./views/post/index";
 import { PostUpdateView } from "./views/post/update";
-import { configIsValid } from "./helpers/validations";
 import { ESAConfig } from "./models/esaConfig";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -12,8 +11,8 @@ export function activate(context: vscode.ExtensionContext) {
     if (esaConfig.isValid()) PostIndexView(esaConfig);
   });
   let update = vscode.commands.registerCommand("extension.esa.update", () => {
-    const esa = vscode.workspace.getConfiguration("esa");
-    if (configIsValid(esa)) PostUpdateView();
+    const esaConfig = new ESAConfig(vscode.workspace.getConfiguration("esa"));
+    if (esaConfig.isValid()) PostUpdateView(esaConfig);
   });
 
   context.subscriptions.push(open);

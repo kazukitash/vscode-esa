@@ -8,8 +8,8 @@ export class Posts {
   constructor(posts: Post[]) {
     this.posts = posts;
     this.items = posts.map((post) => {
-      const updated_at = post.updated_at.format("YYYY/MM/DD HH:mm:ss");
-      const user_name = post.created_by.name;
+      const updated_at = post.updated_at?.format("YYYY/MM/DD HH:mm:ss");
+      const user_name = post.created_by?.name;
       return {
         label: post.number.toString(),
         description: post.name,

@@ -47,30 +47,39 @@ export class PostController {
     return new Posts(posts);
   }
 
-  static update(post: Post) {
-    const esa = vscode.workspace.getConfiguration("esa");
+  static update(esaConfig: ESAConfig, post: Post) {
     const config = {
       method: "patch",
-      url: `${this.esaURL}/${esa.teamName}/posts/${post.number}`,
+      url: `${this.esaURL}/${esaConfig.teamName}/posts/${post.number}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${esa.accessToken}`,
+        Authorization: `Bearer ${esaConfig.accessToken}`,
       },
       data: {
         post: post,
       },
     };
 
-    axios(config)
-      .then((response: any) => {
-        vscode.window.showInformationMessage(
-          `Update post "${response.data.name}"`
-        );
-      })
-      .catch((error: any) => {
-        vscode.window.showErrorMessage(
-          `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`
-        );
-      });
+    vscode.window.setStatusBarMessage("Updating posts ...", 2000);
+    try {
+      axios(config)
+        .then((response: any) => {
+          vscode.window.showInformationMessage(
+            `Update post "${response.data.name}"`
+          );
+        })
+        .catch((error: any) => {
+          throw new Exception(
+            `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`,
+            LOGTYPE.ERROR
+          );
+        });
+    } catch (error) {
+      if (error instanceof Exception) {
+        error.log();
+      } else {
+        console.log(error);
+      }
+    }
   }
 }
