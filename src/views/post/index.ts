@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as dayjs from "dayjs";
 
 import { Post } from "../../models/post";
-import { AllIndexOptions } from "../../models/indexOptions";
+import { AllIndexOptions } from "../../helpers/indexOptions";
 import { PostController } from "../../controllers/post";
 
 let posts: Post[] = new Array<Post>();

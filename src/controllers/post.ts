@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 const axios = require("axios");
 
 import { Post } from "../models/post";
-import { IndexOptions } from "../models/indexOptions";
+import { IndexOptions } from "../helpers/indexOptions";
 
 export class PostController {
   static esaURL = "https://api.esa.io/v1/teams";
