@@ -1,6 +1,5 @@
-import * as vscode from "vscode";
+import { window } from "vscode";
 const axios = require("axios");
-
 import { Post } from "../models/post";
 import { Posts } from "../models/posts";
 import { ESAConfig } from "../models/esaConfig";
@@ -20,7 +19,7 @@ export class PostController {
     };
 
     let posts = new Array<Post>();
-    vscode.window.setStatusBarMessage("Requesting posts ...", 2000);
+    window.setStatusBarMessage("Requesting posts ...", 2000);
     try {
       await axios(config)
         .then((response: any) => {
@@ -60,13 +59,11 @@ export class PostController {
       },
     };
 
-    vscode.window.setStatusBarMessage("Updating posts ...", 2000);
+    window.setStatusBarMessage("Updating posts ...", 2000);
     try {
       axios(config)
         .then((response: any) => {
-          vscode.window.showInformationMessage(
-            `Update post "${response.data.name}"`
-          );
+          window.showInformationMessage(`Update post "${response.data.name}"`);
         })
         .catch((error: any) => {
           throw new Exception(

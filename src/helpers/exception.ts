@@ -1,4 +1,4 @@
-import * as vscode from "vscode";
+import { window } from "vscode";
 
 export const LOGTYPE = {
   INFO: "info",
@@ -20,14 +20,14 @@ export class Exception {
   log() {
     switch (this.type) {
       case LOGTYPE.INFO:
-        vscode.window.showInformationMessage(this.message);
+        window.showInformationMessage(this.message);
         break;
       case LOGTYPE.WARN:
-        vscode.window.showWarningMessage(this.message);
+        window.showWarningMessage(this.message);
         break;
       case LOGTYPE.ERROR:
       default:
-        vscode.window.showErrorMessage(this.message);
+        window.showErrorMessage(this.message);
         break;
     }
   }

@@ -1,4 +1,4 @@
-import * as vscode from "vscode";
+import { window } from "vscode";
 import { Post } from "../../models/post";
 import { PostController } from "../../controllers/post";
 import { ESAConfig } from "../../models/esaConfig";
@@ -6,7 +6,7 @@ import { Exception, LOGTYPE } from "../../helpers/exception";
 
 export function PostUpdateView(esaConfig: ESAConfig) {
   try {
-    const textEditor = vscode.window.activeTextEditor;
+    const textEditor = window.activeTextEditor;
     if (!textEditor || textEditor.document.languageId != "markdown") {
       throw new Exception(
         "Markdown file is not open. Please open and focus the markdown file you want to update.",

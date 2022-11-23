@@ -1,4 +1,4 @@
-import * as dayjs from "dayjs";
+import { Dayjs } from "dayjs";
 import { Exception, LOGTYPE } from "../helpers/exception";
 import { User } from "./User";
 
@@ -8,7 +8,7 @@ export class Post {
   body_md: string;
   wip: boolean;
   created_by?: User;
-  updated_at?: dayjs.Dayjs;
+  updated_at?: Dayjs;
 
   constructor(post: {
     number: number;
@@ -23,7 +23,7 @@ export class Post {
     this.body_md = post.body_md;
     this.wip = post.wip;
     if (post.created_by) this.created_by = post.created_by;
-    if (post.updated_at) this.updated_at = dayjs(post.updated_at);
+    if (post.updated_at) this.updated_at = new Dayjs(post.updated_at);
   }
 
   static decode(post: any): Post | undefined {

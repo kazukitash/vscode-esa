@@ -1,9 +1,9 @@
-import * as vscode from "vscode";
+import { QuickPickItem } from "vscode";
 import { Post } from "./post";
 
 export class Posts {
   posts: Post[];
-  items: vscode.QuickPickItem[];
+  items: QuickPickItem[];
 
   constructor(posts: Post[]) {
     this.posts = posts;
@@ -22,7 +22,7 @@ export class Posts {
     return this.posts.length == 0;
   }
 
-  find(item: vscode.QuickPickItem): Post | undefined {
+  find(item: QuickPickItem): Post | undefined {
     return this.posts.find((p) => p.number.toString() === item.label);
   }
 }
