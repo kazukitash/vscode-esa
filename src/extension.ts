@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-
 import { PostIndexView } from "./views/post/index";
 import { PostUpdateView } from "./views/post/update";
 import { configIsValid } from "./helpers/validations";
