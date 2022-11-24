@@ -1,32 +1,33 @@
-import { WorkspaceConfiguration, window } from "vscode";
+import { WorkspaceConfiguration, window } from 'vscode'
 
 export class ESA {
-  accessToken?: string;
-  userName?: string;
-  teamName?: string;
+  accessToken: string
+  userName: string
+  teamName: string
 
   constructor(config: WorkspaceConfiguration) {
-    this.accessToken = config.accessToken;
-    this.userName = config.userName;
-    this.teamName = config.teamName;
+    this.accessToken =
+      config.accessToken !== undefined ? config.accessToken : ''
+    this.userName = config.userName !== undefined ? config.userName : ''
+    this.teamName = config.teamName !== undefined ? config.teamName : ''
   }
 
   isValid(): boolean {
-    if (!this.accessToken) {
-      window.showInformationMessage("Check readme for details.");
-      window.showErrorMessage("Please set personal access token.");
-      return false;
+    if (this.accessToken === '') {
+      void window.showInformationMessage('Check readme for details.')
+      void window.showErrorMessage('Please set personal access token.')
+      return false
     }
-    if (!this.userName) {
-      window.showInformationMessage("Check readme for details.");
-      window.showErrorMessage("Please set your user name.");
-      return false;
+    if (this.userName === '') {
+      void window.showInformationMessage('Check readme for details.')
+      void window.showErrorMessage('Please set your user name.')
+      return false
     }
-    if (!this.teamName) {
-      window.showInformationMessage("Check readme for details.");
-      window.showErrorMessage("Please set your team name.");
-      return false;
+    if (this.teamName === '') {
+      void window.showInformationMessage('Check readme for details.')
+      void window.showErrorMessage('Please set your team name.')
+      return false
     }
-    return true;
+    return true
   }
 }
