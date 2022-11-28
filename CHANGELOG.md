@@ -2,8 +2,12 @@
 
 All notable changes to the "esa" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
 ## [Unreleased]
 
-- Initial release
+## [1.0.0] - 2022-11-28
+
+### Added
+
+- Create post command.
+- Open post command.
+- Update post command.
