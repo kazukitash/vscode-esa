@@ -51,3 +51,5 @@ Your post will update.
 | User Name        | YES      | Your User Name.                                                                           |
 | Team Name        | YES      | Your Team Name.                                                                           |
 | Default Category |          | Your Default Category when creating posts.                                                |
+
+The icon image is provided by [esa LLC](https://docs.esa.io/posts/125) / [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja)

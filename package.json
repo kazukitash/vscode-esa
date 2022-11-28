@@ -1,9 +1,22 @@
 {
   "name": "vscode-esa",
   "displayName": "esa",
+  "icon": "images/icon.png",
   "description": "Create, open and edit esa",
   "version": "1.0.0",
   "publisher": "kazukitash",
+  "author": {
+    "name": "kazukitash"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/kazukitash/vscode-esa/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kazukitash/vscode-esa.git"
+  },
+  "homepage": "https://github.com/kazukitash/vscode-esa/blob/main/README.md",
   "engines": {
     "vscode": "^1.73.0"
   },
