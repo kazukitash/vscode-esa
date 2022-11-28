@@ -24,23 +24,23 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.esa.create",
-    "onCommand:extension.esa.open",
-    "onCommand:extension.esa.update"
+    "onCommand:esa.create",
+    "onCommand:esa.open",
+    "onCommand:esa.update"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.esa.create",
+        "command": "esa.create",
         "title": "ESA: Create Post"
       },
       {
-        "command": "extension.esa.open",
+        "command": "esa.open",
         "title": "ESA: Open Post"
       },
       {
-        "command": "extension.esa.update",
+        "command": "esa.update",
         "title": "ESA: Update Post"
       }
     ],

@@ -4,13 +4,13 @@ import { PostCommand } from './commands/post'
 export function activate(context: ExtensionContext): void {
   console.log('"vscode-esa" is now active!')
 
-  const create = commands.registerCommand('extension.esa.create', async () => {
+  const create = commands.registerCommand('esa.create', async () => {
     await PostCommand.instance()?.create()
   })
-  const open = commands.registerCommand('extension.esa.open', async () => {
+  const open = commands.registerCommand('esa.open', async () => {
     await PostCommand.instance()?.open()
   })
-  const update = commands.registerCommand('extension.esa.update', () => {
+  const update = commands.registerCommand('esa.update', () => {
     PostCommand.instance()?.update()
   })
 
