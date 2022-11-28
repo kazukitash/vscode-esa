@@ -1,10 +1,11 @@
-//@ts-check
+// @ts-check
 
 'use strict'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
 
-//@ts-check
+// @ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
 
 /** @type WebpackConfig */
