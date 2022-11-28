@@ -6,10 +6,9 @@ export class ESA {
   teamName: string
 
   constructor(config: WorkspaceConfiguration) {
-    this.accessToken =
-      config.accessToken !== undefined ? config.accessToken : ''
-    this.userName = config.userName !== undefined ? config.userName : ''
-    this.teamName = config.teamName !== undefined ? config.teamName : ''
+    this.accessToken = config.accessToken
+    this.userName = config.userName
+    this.teamName = config.teamName
   }
 
   isValid(): boolean {
