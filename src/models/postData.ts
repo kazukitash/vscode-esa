@@ -5,6 +5,7 @@ export interface PostData {
   name: string
   body_md: string
   wip: boolean
+  category: string
   created_by: User
   updated_at: string
 }

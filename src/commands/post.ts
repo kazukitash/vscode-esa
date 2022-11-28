@@ -2,6 +2,7 @@ import { window, workspace, Position } from 'vscode'
 import { PostService, OPEN_OPTIONS } from '../services/post'
 import { ESA } from '../models/esa'
 import { Exception, LOG_TYPE } from '../helpers/exception'
+import { CreatePost } from '../models/createPost'
 import { UpdatePost } from '../models/updatePost'
 
 export class PostCommand {
@@ -18,6 +19,48 @@ export class PostCommand {
     } else {
       return undefined
     }
+  }
+
+  async create(): Promise<void> {
+    if (this.esa.defaultCategory === '') {
+      void window.showInformationMessage(
+        'You can set default category in settings.'
+      )
+    }
+    try {
+      await window
+        .showInputBox({
+          value: this.esa.defaultCategory,
+          prompt:
+            'Please enter article path like "category1/category2/articlename"',
+        })
+        .then(async (rawPath) => {
+          const path = rawPath?.trim()
+          if (path === undefined || path.length === 0) {
+            throw new Exception('Invalid article path', LOG_TYPE.ERROR)
+          }
+          const post = CreatePost.instance(path)
+          const postService = new PostService(this.esa)
+          return await postService.create(post)
+        })
+        .then((post) => {
+          if (post === undefined) {
+            throw new Exception('Invalid post.', LOG_TYPE.ERROR)
+          }
+          return post.generateContent()
+        })
+        .then(async (content) => {
+          await workspace
+            .openTextDocument({ language: 'markdown' })
+            .then((doc) => window.showTextDocument(doc))
+            .then(async (editor) => {
+              const startPos = new Position(1, 0)
+              await editor.edit((edit) => {
+                edit.insert(startPos, content)
+              })
+            })
+        })
+    } catch (error) {}
   }
 
   async open(): Promise<void> {

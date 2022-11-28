@@ -1,5 +1,6 @@
 import { QuickPickItem } from 'vscode'
 import { Post } from './post'
+import * as dayjs from 'dayjs'
 
 export class Posts {
   posts: Post[]
@@ -8,8 +9,8 @@ export class Posts {
   constructor(posts: Post[]) {
     this.posts = posts
     this.items = posts.map((post) => {
-      const updatedAt = post.updatedAt?.format('YYYY/MM/DD HH:mm:ss')
-      const userName = post.createdBy?.name
+      const updatedAt = dayjs(post.updated_at).format('YYYY/MM/DD HH:mm:ss')
+      const userName = post.created_by.name
       if (updatedAt === undefined || userName === undefined) {
         return {
           label: post.number.toString(),

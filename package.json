@@ -11,12 +11,17 @@
     "Other"
   ],
   "activationEvents": [
+    "onCommand:extension.esa.create",
     "onCommand:extension.esa.open",
     "onCommand:extension.esa.update"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "extension.esa.create",
+        "title": "ESA: Create Post"
+      },
       {
         "command": "extension.esa.open",
         "title": "ESA: Open Post"
@@ -44,6 +49,11 @@
           "type": "string",
           "default": "",
           "description": "Set your Team Name"
+        },
+        "esa.defaultCategory": {
+          "type": "string",
+          "default": "",
+          "description": "Set your Default Category when post create."
         }
       }
     }

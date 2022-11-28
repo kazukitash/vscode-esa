@@ -4,11 +4,17 @@ export class ESA {
   accessToken: string
   userName: string
   teamName: string
+  defaultCategory: string
 
   constructor(config: WorkspaceConfiguration) {
     this.accessToken = config.accessToken
     this.userName = config.userName
     this.teamName = config.teamName
+    this.defaultCategory = config.defaultCategory
+    if (this.defaultCategory !== '') {
+      const PATTERN = /\/$/
+      if (!PATTERN.test(this.defaultCategory)) this.defaultCategory += '/'
+    }
   }
 
   isValid(): boolean {

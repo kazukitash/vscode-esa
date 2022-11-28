@@ -5,6 +5,7 @@ import { Posts } from '../models/posts'
 import { ESA } from '../models/esa'
 import { Exception, LOG_TYPE } from '../helpers/exception'
 import { AxiosError, AxiosResponse } from 'axios'
+import { CreatePost } from '../models/createPost'
 import { UpdatePost } from '../models/updatePost'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios')
@@ -24,6 +25,48 @@ export class PostService {
     this.esa = esa
   }
 
+  async create(post: CreatePost): Promise<Post | undefined> {
+    const config = {
+      method: 'post',
+      url: `${PostService.esaURL}/${this.esa.teamName}/posts`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.esa.accessToken}`,
+      },
+      data: { post },
+    }
+
+    let newPost: Post | undefined
+    window.setStatusBarMessage('Creating post ...', 2000)
+    try {
+      await axios(config)
+        .then((response: AxiosResponse) => {
+          if (response.headers?.['content-type']?.includes('json') ?? false) {
+            newPost = Post.instance(response.data as PostData)
+          }
+        })
+        .catch((error: AxiosError) => {
+          const status = error.status
+          const response = error.response?.data
+          if (status !== undefined) {
+            throw new Exception(
+              `API Request Error\nStatus: ${status}\nResponse: ${JSON.stringify(
+                response
+              )}`,
+              LOG_TYPE.ERROR
+            )
+          }
+        })
+    } catch (error) {
+      if (error instanceof Exception) {
+        error.log()
+      } else {
+        console.log(error)
+      }
+    }
+    return newPost
+  }
+
   async open(option: string): Promise<Posts> {
     const config = {
       method: 'get',
@@ -41,22 +84,23 @@ export class PostService {
         .then((response: AxiosResponse) => {
           if (response.headers?.['content-type']?.includes('json') ?? false) {
             response.data.posts.forEach((postData: PostData) => {
-              const post = Post.decode(postData)
+              const post = Post.instance(postData)
               if (post !== undefined) posts.push(post)
             })
           }
         })
-        .catch(
-          (error: {
-            status: string
-            response: { data: { error: string; message: string } }
-          }) => {
+        .catch((error: AxiosError) => {
+          const status = error.status
+          const response = error.response?.data
+          if (status !== undefined) {
             throw new Exception(
-              `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`,
+              `API Request Error\nStatus: ${status}\nResponse: ${JSON.stringify(
+                response
+              )}`,
               LOG_TYPE.ERROR
             )
           }
-        )
+        })
     } catch (error) {
       if (error instanceof Exception) {
         error.log()
