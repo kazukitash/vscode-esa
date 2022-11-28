@@ -1,8 +1,8 @@
 import { window, workspace, Position } from 'vscode'
-import { Post } from '../models/post'
 import { PostService, OPEN_OPTIONS } from '../services/post'
 import { ESA } from '../models/esa'
 import { Exception, LOG_TYPE } from '../helpers/exception'
+import { UpdatePost } from '../models/updatePost'
 
 export class PostCommand {
   esa: ESA
@@ -89,7 +89,7 @@ export class PostCommand {
         )
       }
 
-      const post = Post.cast(content)
+      const post = UpdatePost.instance(content)
       const postService = new PostService(this.esa)
       postService.update(post)
     } catch (error) {

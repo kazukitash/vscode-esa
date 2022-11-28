@@ -4,7 +4,8 @@ import { PostData } from '../models/postData'
 import { Posts } from '../models/posts'
 import { ESA } from '../models/esa'
 import { Exception, LOG_TYPE } from '../helpers/exception'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
+import { UpdatePost } from '../models/updatePost'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios')
 
@@ -66,7 +67,7 @@ export class PostService {
     return new Posts(posts)
   }
 
-  update(post: Post): void {
+  update(post: UpdatePost): void {
     const config = {
       method: 'patch',
       url: `${PostService.esaURL}/${this.esa.teamName}/posts/${post.number}`,
@@ -77,24 +78,23 @@ export class PostService {
       data: { post },
     }
 
-    window.setStatusBarMessage('Updating posts ...', 2000)
+    window.setStatusBarMessage('Updating post ...', 2000)
     try {
       axios(config)
         .then((response: AxiosResponse) => {
           const name: string = response.data.name
           void window.showInformationMessage(`Update post "${name}"`)
         })
-        .catch(
-          (error: {
-            status: string
-            response: { data: { error: string; message: string } }
-          }) => {
+        .catch((error: AxiosError) => {
+          const status = error.status
+          const response = JSON.stringify(error.response?.data)
+          if (status !== undefined) {
             throw new Exception(
-              `Server response status: ${error.status}\nerror: ${error.response.data.error}\nmessage: ${error.response.data.message}`,
+              `API Request Error\nStatus: ${status}\nResponse: ${response}`,
               LOG_TYPE.ERROR
             )
           }
-        )
+        })
     } catch (error) {
       if (error instanceof Exception) {
         error.log()
