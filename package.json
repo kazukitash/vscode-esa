@@ -53,7 +53,7 @@
         "esa.defaultCategory": {
           "type": "string",
           "default": "",
-          "description": "Set your Default Category when post create."
+          "description": "Set your Default Category when creating post."
         }
       }
     }
